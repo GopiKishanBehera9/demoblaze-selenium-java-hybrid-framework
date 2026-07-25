@@ -13,7 +13,26 @@ public final class FrameworkConstants {
 
 	private FrameworkConstants() {
 		//Prevent object creation
+		throw new IllegalStateException("Utility class");
 	}
+	
+	// ===========================
+	// Framework Information
+	// ===========================
+
+	public static final String FRAMEWORK_NAME = "Demoblaze Selenium Java Hybrid Framework";
+
+	public static final String FRAMEWORK_VERSION = "1.0.0";
+	
+	// ===========================
+	// Browser Names
+	// ===========================
+
+	public static final String CHROME = "chrome";
+
+	public static final String EDGE = "edge";
+
+	public static final String FIREFOX = "firefox";
 	
 	// ===========================
     // Configuration Files
