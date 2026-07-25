@@ -1,0 +1,124 @@
+package com.demoblaze.factory;
+
+import java.time.Duration;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+
+import com.demoblaze.config.ConfigReader;
+import com.demoblaze.driver.DriverManager;
+import com.demoblaze.enums.BrowserType;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+/**
+ * DriverFactory
+ *
+ * Creates browser instances based on configuration.
+ *
+ * @author Gopi Kishan Behera
+ */
+public final class DriverFactory {
+
+    private DriverFactory() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static void initDriver() {
+
+        String browserName = ConfigReader.getProperty("browser");
+        boolean headless = Boolean.parseBoolean(ConfigReader.getProperty("headless"));
+        boolean incognito = Boolean.parseBoolean(ConfigReader.getProperty("incognito"));
+
+        BrowserType browser = BrowserType.valueOf(browserName.toUpperCase());
+
+        WebDriver driver;
+
+        switch (browser) {
+
+        case CHROME:
+
+            WebDriverManager.chromedriver().setup();
+
+            ChromeOptions chromeOptions = new ChromeOptions();
+
+            if (headless) {
+                chromeOptions.addArguments("--headless=new");
+            }
+
+            if (incognito) {
+                chromeOptions.addArguments("--incognito");
+            }
+
+            driver = new ChromeDriver(chromeOptions);
+
+            break;
+
+        case EDGE:
+
+            WebDriverManager.edgedriver().setup();
+
+            EdgeOptions edgeOptions = new EdgeOptions();
+
+            if (headless) {
+                edgeOptions.addArguments("--headless=new");
+            }
+
+            if (incognito) {
+                edgeOptions.addArguments("--inprivate");
+            }
+
+            driver = new EdgeDriver(edgeOptions);
+
+            break;
+
+        case FIREFOX:
+
+            WebDriverManager.firefoxdriver().setup();
+
+            FirefoxOptions firefoxOptions = new FirefoxOptions();
+
+            if (headless) {
+                firefoxOptions.addArguments("-headless");
+            }
+
+            driver = new FirefoxDriver(firefoxOptions);
+
+            break;
+
+        default:
+
+            throw new IllegalArgumentException("Unsupported browser : " + browserName);
+
+        }
+
+        driver.manage().window().maximize();
+        driver.manage().deleteAllCookies();
+
+        driver.manage().timeouts().implicitlyWait(
+                Duration.ofSeconds(Integer.parseInt(ConfigReader.getProperty("implicit.wait"))));
+
+        driver.manage().timeouts().pageLoadTimeout(
+                Duration.ofSeconds(Integer.parseInt(ConfigReader.getProperty("page.load.timeout"))));
+
+        DriverManager.setDriver(driver);
+
+    }
+
+    public static void quitDriver() {
+
+        if (DriverManager.getDriver() != null) {
+
+            DriverManager.getDriver().quit();
+            DriverManager.unload();
+
+        }
+
+    }
+
+}
