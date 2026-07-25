@@ -1,0 +1,20 @@
+# Maven
+target/
+
+# Eclipse
+.settings/
+.project
+.classpath
+
+# Logs
+logs/
+*.log
+
+# Reports
+allure-results/
+allure-report/
+test-output/
+reports/
+
+# Screenshots
+screenshots/

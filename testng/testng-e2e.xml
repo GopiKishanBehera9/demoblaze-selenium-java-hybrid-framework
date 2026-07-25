@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Demoblaze End-To-End Suite" verbose="2">
+
+    <test name="E2E Tests">
+
+        <packages>
+            <package name="com.demoblaze.tests.e2e"/>
+        </packages>
+
+    </test>
+
+</suite>
