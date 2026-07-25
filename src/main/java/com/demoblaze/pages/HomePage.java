@@ -29,6 +29,10 @@ public class HomePage extends BasePage {
 
     private final By signUpMenu = By.id("signin2");
 
+    private final By logoutMenu = By.id("logout2");
+
+    private final By welcomeUser = By.id("nameofuser");
+
     // ==========================
     // Actions
     // ==========================
@@ -55,6 +59,22 @@ public class HomePage extends BasePage {
 
     public void clickSignUp() {
         actions.click(signUpMenu);
+    }
+
+    public void clickLogout() {
+        actions.click(logoutMenu);
+    }
+
+    public boolean isLogoutDisplayed() {
+        return actions.isDisplayed(logoutMenu);
+    }
+
+    public boolean isUserLoggedIn() {
+        return actions.isDisplayed(welcomeUser);
+    }
+
+    public String getLoggedInUsername() {
+        return actions.getText(welcomeUser);
     }
 
 }

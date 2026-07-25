@@ -11,7 +11,7 @@ import com.demoblaze.base.BasePage;
  */
 public class LoginPage extends BasePage {
 
-    // ==========================
+	// ==========================
     // Locators
     // ==========================
 
@@ -27,13 +27,33 @@ public class LoginPage extends BasePage {
 
     private final By welcomeUser = By.id("nameofuser");
 
-    // ==========================
-    // Actions
-    // ==========================
+    
+ // ==========================
+ // Validation Methods
+ // ==========================
 
     public boolean isLoginModalDisplayed() {
         return actions.isDisplayed(loginModal);
     }
+    
+    /**
+     * Verifies whether the user is logged in.
+     *
+     * @return true if welcome user is displayed
+     */
+
+    public boolean isUserLoggedIn() {
+        return actions.isDisplayed(welcomeUser);
+    }
+
+    public String getWelcomeUserText() {
+        return actions.getText(welcomeUser);
+    }
+
+    // ==========================
+    // Actions
+    // ==========================
+
 
     public void enterUsername(String username) {
         actions.type(usernameTextBox, username);
@@ -52,25 +72,18 @@ public class LoginPage extends BasePage {
     }
 
     /**
-     * Performs complete login.
+     * Performs login with given credentials.
+     *
+     * @param username Login username
+     * @param password Login password
      */
     public void login(String username, String password) {
 
         enterUsername(username);
-
         enterPassword(password);
-
         clickLoginButton();
 
     }
-
-    /**
-     * Verify successful login.
-     */
-    public boolean isUserLoggedIn() {
-
-        return actions.isDisplayed(welcomeUser);
-
-    }
+   
 
 }

@@ -38,24 +38,24 @@ public final class FrameworkConstants {
     // Configuration Files
     // ===========================
 	
-	public static final String CONFIG_FILE_PATH = "src/main/resources/config/config.properties";
+	public static final String CONFIG_FILE_PATH = "src/main/resource/config/config.properties";
 			
-	public static final String QA_CONFIG_FILE_PATH = "src/main/resources/config/qa.properties";
+	public static final String QA_CONFIG_FILE_PATH = "src/main/resource/config/qa.properties";
 	
-	public static final String STAGE_CONFIG_FILE_PATH = "src/main/resources/config/stage.properties";
+	public static final String STAGE_CONFIG_FILE_PATH = "src/main/resource/config/stage.properties";
 
-    public static final String PROD_CONFIG_FILE_PATH = "src/main/resources/config/prod.properties";
+    public static final String PROD_CONFIG_FILE_PATH = "src/main/resource/config/prod.properties";
     
    
     // ===========================
     // Test Data
     // ===========================
     
-    public static final String EXCEL_PATH = "src/test/resources/testdata/excel/";
+    public static final String EXCEL_PATH = "src/test/resource/testdata/excel/";
 
-    public static final String JSON_PATH = "src/test/resources/testdata/json/";
+    public static final String JSON_PATH = "src/test/resource/testdata/json/";
 
-    public static final String CSV_PATH = "src/test/resources/testdata/csv/";
+    public static final String CSV_PATH = "src/test/resource/testdata/csv/";
     
     
  // ===========================

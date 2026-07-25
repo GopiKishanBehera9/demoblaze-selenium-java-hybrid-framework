@@ -30,11 +30,15 @@ public final class DriverFactory {
     }
 
     public static void initDriver() {
-
+    	
+    	System.out.println("===== DriverFactory Started =====");
+    	
         String browserName = ConfigReader.getProperty("browser");
+        System.out.println(browserName);
         boolean headless = Boolean.parseBoolean(ConfigReader.getProperty("headless"));
+        System.out.println(headless);
         boolean incognito = Boolean.parseBoolean(ConfigReader.getProperty("incognito"));
-
+        System.out.println(incognito);
         BrowserType browser = BrowserType.valueOf(browserName.toUpperCase());
 
         WebDriver driver;
@@ -42,10 +46,12 @@ public final class DriverFactory {
         switch (browser) {
 
         case CHROME:
-
+        	
+        	System.out.println("Setting up ChromeDriver");
             WebDriverManager.chromedriver().setup();
 
             ChromeOptions chromeOptions = new ChromeOptions();
+            
 
             if (headless) {
                 chromeOptions.addArguments("--headless=new");
@@ -55,7 +61,9 @@ public final class DriverFactory {
                 chromeOptions.addArguments("--incognito");
             }
 
+            System.out.println("Creating ChromeDriver...");
             driver = new ChromeDriver(chromeOptions);
+            System.out.println("ChromeDriver Created");
 
             break;
 

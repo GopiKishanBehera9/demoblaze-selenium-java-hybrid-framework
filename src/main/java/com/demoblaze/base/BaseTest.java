@@ -25,14 +25,34 @@ public class BaseTest {
 
         logger.info("========== Test Execution Started ==========");
 
-        DriverFactory.initDriver();
+        try {
 
-        logger.info("Browser launched successfully.");
+            System.out.println("========== BaseTest ==========");
+            System.out.println("Before initDriver");
 
-        DriverManager.getDriver().get(
-                PropertyManager.getEnvironmentProperty("app.url"));
+            DriverFactory.initDriver();
 
-        logger.info("Application URL opened successfully.");
+            System.out.println("After initDriver");
+
+            logger.info("Browser launched successfully.");
+
+            String appUrl = PropertyManager.getEnvironmentProperty("app.url");
+
+            System.out.println("Application URL : " + appUrl);
+
+            DriverManager.getDriver().get(appUrl);
+
+            System.out.println("URL Opened Successfully");
+
+            logger.info("Application URL opened successfully.");
+
+        } catch (Exception e) {
+
+            System.err.println("Exception occurred in BaseTest.setUp()");
+            e.printStackTrace();
+
+            throw e;
+        }
 
     }
 
@@ -41,10 +61,11 @@ public class BaseTest {
 
         logger.info("Closing browser.");
 
-        DriverFactory.quitDriver();
+        if (DriverManager.getDriver() != null) {
+            DriverFactory.quitDriver();
+        }
 
         logger.info("========== Test Execution Finished ==========");
-
     }
 
 }
