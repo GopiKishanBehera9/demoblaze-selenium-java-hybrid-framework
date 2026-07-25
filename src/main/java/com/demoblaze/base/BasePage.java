@@ -3,6 +3,7 @@ package com.demoblaze.base;
 import org.openqa.selenium.WebDriver;
 
 import com.demoblaze.driver.DriverManager;
+import com.demoblaze.wrappers.ElementActions;
 
 /**
  * BasePage
@@ -15,8 +16,14 @@ public class BasePage {
 
     protected WebDriver driver;
 
+    protected ElementActions actions;
+
     public BasePage() {
-        this.driver = DriverManager.getDriver();
+
+        driver = DriverManager.getDriver();
+
+        actions = new ElementActions();
+
     }
 
 }
