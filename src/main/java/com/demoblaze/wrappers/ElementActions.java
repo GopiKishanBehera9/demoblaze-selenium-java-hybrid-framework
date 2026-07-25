@@ -3,71 +3,79 @@ package com.demoblaze.wrappers;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.demoblaze.driver.DriverManager;
+import com.demoblaze.utilities.WaitUtils;
 
 /**
  * ElementActions
  *
- * Common reusable Selenium actions.
+ * Reusable Selenium element actions with explicit waits.
  *
  * @author Gopi Kishan Behera
  */
 public class ElementActions {
 
-    /**
-     * Click on element.
-     *
-     * @param locator By locator
-     */
-    public void click(By locator) {
-        DriverManager.getDriver().findElement(locator).click();
+    private final WaitUtils waitUtils;
+
+    public ElementActions() {
+        waitUtils = new WaitUtils();
     }
 
     /**
-     * Type text.
-     *
-     * @param locator By locator
-     * @param text Text to enter
+     * Click on element.
+     */
+    public void click(By locator) {
+
+        waitUtils.waitForElementToBeClickable(locator).click();
+
+    }
+
+    /**
+     * Enter text.
      */
     public void type(By locator, String text) {
 
-        WebElement element = DriverManager.getDriver().findElement(locator);
+        WebElement element = waitUtils.waitForVisibility(locator);
 
         element.clear();
         element.sendKeys(text);
+
     }
 
     /**
      * Get visible text.
-     *
-     * @param locator By locator
-     * @return element text
      */
     public String getText(By locator) {
-        return DriverManager.getDriver().findElement(locator).getText();
+
+        return waitUtils.waitForVisibility(locator).getText();
+
     }
 
     /**
-     * Check element display.
-     *
-     * @param locator By locator
-     * @return true if displayed
+     * Check element visibility.
      */
     public boolean isDisplayed(By locator) {
-        return DriverManager.getDriver().findElement(locator).isDisplayed();
+
+        return waitUtils.waitForVisibility(locator).isDisplayed();
+
     }
 
     /**
      * Get attribute value.
-     *
-     * @param locator By locator
-     * @param attribute attribute name
-     * @return attribute value
      */
     public String getAttribute(By locator, String attribute) {
-        return DriverManager.getDriver()
-                .findElement(locator)
+
+        return waitUtils.waitForVisibility(locator)
                 .getAttribute(attribute);
+
+    }
+
+    /**
+     * Get WebElement.
+     */
+    public WebElement getElement(By locator) {
+
+        return waitUtils.waitForVisibility(locator);
+
     }
 
 }
