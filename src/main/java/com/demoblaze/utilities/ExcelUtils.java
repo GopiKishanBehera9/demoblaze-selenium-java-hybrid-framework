@@ -10,6 +10,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.demoblaze.constants.FrameworkConstants;
+import com.demoblaze.exceptions.ExcelFileException;
 
 /**
  * ExcelUtils
@@ -25,7 +26,10 @@ public final class ExcelUtils {
     }
 
     /**
-     * Returns workbook.
+     * Returns Workbook instance.
+     *
+     * @param fileName Excel file name
+     * @return XSSFWorkbook
      */
     private static XSSFWorkbook getWorkbook(String fileName) {
 
@@ -37,15 +41,23 @@ public final class ExcelUtils {
 
         } catch (IOException e) {
 
-            throw new RuntimeException(
-                    "Unable to open Excel file : " + fileName, e);
+        	throw new ExcelFileException(
+        	        "Unable to open Excel file : "
+        	        + fileName,
+        	        e);
 
         }
 
     }
 
     /**
-     * Read cell data.
+     * Returns cell value.
+     *
+     * @param fileName Excel file
+     * @param sheetName Sheet name
+     * @param rowNumber Row number
+     * @param columnNumber Column number
+     * @return Cell value
      */
     public static String getCellData(String fileName,
                                      String sheetName,
@@ -56,9 +68,23 @@ public final class ExcelUtils {
 
             Sheet sheet = workbook.getSheet(sheetName);
 
+            if (sheet == null) {
+            	throw new ExcelFileException(
+            	        "Sheet not found : "
+            	        + sheetName);
+            }
+
             Row row = sheet.getRow(rowNumber);
 
+            if (row == null) {
+                return "";
+            }
+
             Cell cell = row.getCell(columnNumber);
+
+            if (cell == null) {
+                return "";
+            }
 
             DataFormatter formatter = new DataFormatter();
 
@@ -66,15 +92,20 @@ public final class ExcelUtils {
 
         } catch (Exception e) {
 
-            throw new RuntimeException(
-                    "Unable to read cell value.", e);
+        	throw new ExcelFileException(
+        	        "Unable to read cell data.",
+        	        e);
 
         }
 
     }
 
     /**
-     * Get total rows.
+     * Returns total number of data rows.
+     *
+     * @param fileName Excel file
+     * @param sheetName Sheet name
+     * @return Row count
      */
     public static int getRowCount(String fileName,
                                   String sheetName) {
@@ -82,6 +113,11 @@ public final class ExcelUtils {
         try (XSSFWorkbook workbook = getWorkbook(fileName)) {
 
             Sheet sheet = workbook.getSheet(sheetName);
+
+            if (sheet == null) {
+                throw new RuntimeException(
+                        "Sheet not found : " + sheetName);
+            }
 
             return sheet.getLastRowNum();
 
@@ -95,7 +131,11 @@ public final class ExcelUtils {
     }
 
     /**
-     * Get total columns.
+     * Returns total number of columns.
+     *
+     * @param fileName Excel file
+     * @param sheetName Sheet name
+     * @return Column count
      */
     public static int getColumnCount(String fileName,
                                      String sheetName) {
@@ -104,12 +144,46 @@ public final class ExcelUtils {
 
             Sheet sheet = workbook.getSheet(sheetName);
 
-            return sheet.getRow(0).getLastCellNum();
+            if (sheet == null) {
+                throw new RuntimeException(
+                        "Sheet not found : " + sheetName);
+            }
+
+            Row headerRow = sheet.getRow(0);
+
+            if (headerRow == null) {
+                return 0;
+            }
+
+            return headerRow.getLastCellNum();
 
         } catch (Exception e) {
 
             throw new RuntimeException(
                     "Unable to get column count.", e);
+
+        }
+
+    }
+
+    /**
+     * Checks whether a sheet exists.
+     *
+     * @param fileName Excel file
+     * @param sheetName Sheet name
+     * @return true if sheet exists
+     */
+    public static boolean isSheetExists(String fileName,
+                                        String sheetName) {
+
+        try (XSSFWorkbook workbook = getWorkbook(fileName)) {
+
+            return workbook.getSheet(sheetName) != null;
+
+        } catch (Exception e) {
+
+            throw new RuntimeException(
+                    "Unable to verify sheet existence.", e);
 
         }
 

@@ -11,6 +11,7 @@ import org.openqa.selenium.TakesScreenshot;
 
 import com.demoblaze.constants.FrameworkConstants;
 import com.demoblaze.driver.DriverManager;
+import com.demoblaze.exceptions.ScreenshotException;
 
 /**
  * ScreenshotUtils
@@ -28,38 +29,38 @@ public final class ScreenshotUtils {
     /**
      * Capture screenshot.
      *
-     * @param screenshotName screenshot file name
+     * @param screenshotName screenshot name
      * @return absolute screenshot path
      */
     public static String captureScreenshot(String screenshotName) {
 
-        String timeStamp = LocalDateTime.now()
-                .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
-
-        String fileName = screenshotName + "_" + timeStamp + ".png";
-
-        File folder = new File(FrameworkConstants.SCREENSHOT_PATH);
-
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
-
-        File source = ((TakesScreenshot) DriverManager.getDriver())
-                .getScreenshotAs(OutputType.FILE);
-
-        File target = new File(folder, fileName);
-
         try {
+
+            String timeStamp = LocalDateTime.now()
+                    .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+
+            String fileName = screenshotName + "_" + timeStamp + ".png";
+
+            String destination =
+                    FrameworkConstants.SCREENSHOT_PATH + fileName;
+
+            File source = ((TakesScreenshot) DriverManager.getDriver())
+                    .getScreenshotAs(OutputType.FILE);
+
+            File target = new File(destination);
 
             FileUtils.copyFile(source, target);
 
+            return target.getAbsolutePath();
+
         } catch (IOException e) {
 
-            throw new RuntimeException(
-                    "Unable to capture screenshot.", e);
+            throw new ScreenshotException(
+                    "Unable to capture screenshot.",
+                    e);
 
         }
 
-        return target.getAbsolutePath();
     }
+
 }

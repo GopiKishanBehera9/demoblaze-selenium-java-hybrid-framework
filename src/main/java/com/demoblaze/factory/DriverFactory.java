@@ -13,6 +13,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import com.demoblaze.config.ConfigReader;
 import com.demoblaze.driver.DriverManager;
 import com.demoblaze.enums.BrowserType;
+import com.demoblaze.exceptions.InvalidBrowserException;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -101,7 +102,8 @@ public final class DriverFactory {
 
         default:
 
-            throw new IllegalArgumentException("Unsupported browser : " + browserName);
+        	throw new InvalidBrowserException(
+        	        "Unsupported browser : " + browserName);
 
         }
 

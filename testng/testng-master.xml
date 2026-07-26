@@ -10,6 +10,8 @@
     <listeners>
 
         <listener class-name="com.demoblaze.listeners.TestListener"/>
+        <listener class-name="com.demoblaze.listeners.TestListener"/>
+    	<listener class-name="com.demoblaze.retry.RetryTransformer"/>
 
     </listeners>
 

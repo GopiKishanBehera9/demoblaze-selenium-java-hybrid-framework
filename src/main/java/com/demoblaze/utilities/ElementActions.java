@@ -6,6 +6,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.demoblaze.driver.DriverManager;
+import com.demoblaze.exceptions.ElementActionException;
 
 /**
  * ElementActions
@@ -30,23 +31,44 @@ public class ElementActions {
      */
     public void click(By locator) {
 
-        waitUtils.waitForElementToBeClickable(locator)
-                 .click();
+        try {
+
+            DriverManager.getDriver()
+                    .findElement(locator)
+                    .click();
+
+        } catch (Exception e) {
+
+            throw new ElementActionException(
+                    "Unable to click element : " + locator,
+                    e);
+
+        }
 
     }
 
     /**
      * Type text into textbox.
-     *
      * @param locator element locator
      * @param text input text
      */
     public void type(By locator, String text) {
 
-        WebElement element = waitUtils.waitForVisibility(locator);
+        try {
 
-        element.clear();
-        element.sendKeys(text);
+            WebElement element =
+                    DriverManager.getDriver().findElement(locator);
+
+            element.clear();
+            element.sendKeys(text);
+
+        } catch (Exception e) {
+
+            throw new ElementActionException(
+                    "Unable to type into element : " + locator,
+                    e);
+
+        }
 
     }
 
@@ -57,8 +79,19 @@ public class ElementActions {
      */
     public void clear(By locator) {
 
-        waitUtils.waitForVisibility(locator)
-                 .clear();
+        try {
+
+            DriverManager.getDriver()
+                    .findElement(locator)
+                    .clear();
+
+        } catch (Exception e) {
+
+            throw new ElementActionException(
+                    "Unable to clear element : " + locator,
+                    e);
+
+        }
 
     }
 
@@ -70,8 +103,19 @@ public class ElementActions {
      */
     public String getText(By locator) {
 
-        return waitUtils.waitForVisibility(locator)
-                        .getText();
+        try {
+
+            return DriverManager.getDriver()
+                    .findElement(locator)
+                    .getText();
+
+        } catch (Exception e) {
+
+            throw new ElementActionException(
+                    "Unable to get text from element : " + locator,
+                    e);
+
+        }
 
     }
 
@@ -83,8 +127,19 @@ public class ElementActions {
      */
     public boolean isDisplayed(By locator) {
 
-        return waitUtils.waitForVisibility(locator)
-                        .isDisplayed();
+        try {
+
+            return DriverManager.getDriver()
+                    .findElement(locator)
+                    .isDisplayed();
+
+        } catch (Exception e) {
+
+            throw new ElementActionException(
+                    "Unable to verify element visibility : " + locator,
+                    e);
+
+        }
 
     }
 
@@ -96,8 +151,19 @@ public class ElementActions {
      */
     public boolean isEnabled(By locator) {
 
-        return waitUtils.waitForVisibility(locator)
-                        .isEnabled();
+        try {
+
+            return DriverManager.getDriver()
+                    .findElement(locator)
+                    .isEnabled();
+
+        } catch (Exception e) {
+
+            throw new ElementActionException(
+                    "Unable to verify element enabled state : " + locator,
+                    e);
+
+        }
 
     }
 
@@ -109,8 +175,19 @@ public class ElementActions {
      */
     public boolean isSelected(By locator) {
 
-        return waitUtils.waitForVisibility(locator)
-                        .isSelected();
+        try {
+
+            return DriverManager.getDriver()
+                    .findElement(locator)
+                    .isSelected();
+
+        } catch (Exception e) {
+
+            throw new ElementActionException(
+                    "Unable to verify element selected state : " + locator,
+                    e);
+
+        }
 
     }
 
@@ -123,8 +200,20 @@ public class ElementActions {
      */
     public String getAttribute(By locator, String attribute) {
 
-        return waitUtils.waitForVisibility(locator)
-                        .getAttribute(attribute);
+        try {
+
+            return DriverManager.getDriver()
+                    .findElement(locator)
+                    .getAttribute(attribute);
+
+        } catch (Exception e) {
+
+            throw new ElementActionException(
+                    "Unable to get attribute '" + attribute +
+                    "' from element : " + locator,
+                    e);
+
+        }
 
     }
 
@@ -140,10 +229,20 @@ public class ElementActions {
      */
     public void selectByVisibleText(By locator, String text) {
 
-        Select select = new Select(
-                waitUtils.waitForVisibility(locator));
+        try {
 
-        select.selectByVisibleText(text);
+            Select select = new Select(
+                    DriverManager.getDriver().findElement(locator));
+
+            select.selectByVisibleText(text);
+
+        } catch (Exception e) {
+
+            throw new ElementActionException(
+                    "Unable to select visible text : " + text,
+                    e);
+
+        }
 
     }
 
@@ -155,10 +254,20 @@ public class ElementActions {
      */
     public void selectByValue(By locator, String value) {
 
-        Select select = new Select(
-                waitUtils.waitForVisibility(locator));
+        try {
 
-        select.selectByValue(value);
+            Select select = new Select(
+                    DriverManager.getDriver().findElement(locator));
+
+            select.selectByValue(value);
+
+        } catch (Exception e) {
+
+            throw new ElementActionException(
+                    "Unable to select value : " + value,
+                    e);
+
+        }
 
     }
 
@@ -170,10 +279,20 @@ public class ElementActions {
      */
     public void selectByIndex(By locator, int index) {
 
-        Select select = new Select(
-                waitUtils.waitForVisibility(locator));
+        try {
 
-        select.selectByIndex(index);
+            Select select = new Select(
+                    DriverManager.getDriver().findElement(locator));
+
+            select.selectByIndex(index);
+
+        } catch (Exception e) {
+
+            throw new ElementActionException(
+                    "Unable to select index : " + index,
+                    e);
+
+        }
 
     }
 
@@ -188,11 +307,22 @@ public class ElementActions {
      */
     public void hover(By locator) {
 
-        WebElement element = waitUtils.waitForVisibility(locator);
+        try {
 
-        Actions actions = new Actions(DriverManager.getDriver());
+            WebElement element =
+                    DriverManager.getDriver().findElement(locator);
 
-        actions.moveToElement(element).perform();
+            new Actions(DriverManager.getDriver())
+                    .moveToElement(element)
+                    .perform();
+
+        } catch (Exception e) {
+
+            throw new ElementActionException(
+                    "Unable to hover over element : " + locator,
+                    e);
+
+        }
 
     }
 
@@ -203,11 +333,22 @@ public class ElementActions {
      */
     public void doubleClick(By locator) {
 
-        WebElement element = waitUtils.waitForVisibility(locator);
+        try {
 
-        Actions actions = new Actions(DriverManager.getDriver());
+            WebElement element =
+                    DriverManager.getDriver().findElement(locator);
 
-        actions.doubleClick(element).perform();
+            new Actions(DriverManager.getDriver())
+                    .doubleClick(element)
+                    .perform();
+
+        } catch (Exception e) {
+
+            throw new ElementActionException(
+                    "Unable to double click element : " + locator,
+                    e);
+
+        }
 
     }
 
@@ -218,11 +359,22 @@ public class ElementActions {
      */
     public void rightClick(By locator) {
 
-        WebElement element = waitUtils.waitForVisibility(locator);
+        try {
 
-        Actions actions = new Actions(DriverManager.getDriver());
+            WebElement element =
+                    DriverManager.getDriver().findElement(locator);
 
-        actions.contextClick(element).perform();
+            new Actions(DriverManager.getDriver())
+                    .contextClick(element)
+                    .perform();
+
+        } catch (Exception e) {
+
+            throw new ElementActionException(
+                    "Unable to right click element : " + locator,
+                    e);
+
+        }
 
     }
 
@@ -234,16 +386,26 @@ public class ElementActions {
      */
     public void dragAndDrop(By source, By target) {
 
-        WebElement sourceElement =
-                waitUtils.waitForVisibility(source);
+        try {
 
-        WebElement targetElement =
-                waitUtils.waitForVisibility(target);
+            WebElement sourceElement =
+                    DriverManager.getDriver().findElement(source);
 
-        Actions actions = new Actions(DriverManager.getDriver());
+            WebElement targetElement =
+                    DriverManager.getDriver().findElement(target);
 
-        actions.dragAndDrop(sourceElement, targetElement)
-               .perform();
+            new Actions(DriverManager.getDriver())
+                    .dragAndDrop(sourceElement, targetElement)
+                    .perform();
+
+        } catch (Exception e) {
+
+            throw new ElementActionException(
+                    "Unable to drag element from "
+                            + source + " to " + target,
+                    e);
+
+        }
 
     }
 

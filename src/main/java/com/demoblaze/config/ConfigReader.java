@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import com.demoblaze.constants.FrameworkConstants;
+import com.demoblaze.exceptions.ConfigFileException;
+import com.demoblaze.exceptions.PropertyNotFoundException;
 
 /**
  * ConfigReader
@@ -44,9 +46,9 @@ public final class ConfigReader {
             System.err.println("Failed to load config file!");
             e.printStackTrace();
 
-            throw new RuntimeException(
+            throw new ConfigFileException(
                     "Unable to load config.properties file : "
-                            + FrameworkConstants.CONFIG_FILE_PATH,
+                    + FrameworkConstants.CONFIG_FILE_PATH,
                     e);
         }
     }
@@ -60,8 +62,8 @@ public final class ConfigReader {
         System.out.println("Value : " + value);
 
         if (value == null || value.trim().isEmpty()) {
-            throw new RuntimeException(
-                    "Property '" + key + "' not found in config.properties");
+        	throw new PropertyNotFoundException(
+        	        "Property '" + key + "' not found in config.properties");
         }
 
         return value.trim();

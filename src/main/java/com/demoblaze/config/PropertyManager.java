@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import com.demoblaze.constants.FrameworkConstants;
+import com.demoblaze.exceptions.ConfigFileException;
+import com.demoblaze.exceptions.PropertyNotFoundException;
 
 public final class PropertyManager {
 
@@ -50,7 +52,9 @@ public final class PropertyManager {
 
         } catch (IOException e) {
 
-            throw new RuntimeException("Unable to load environment properties file.", e);
+        	throw new ConfigFileException(
+        	        "Unable to load environment properties file.",
+        	        e);
 
         }
 
@@ -62,7 +66,8 @@ public final class PropertyManager {
 
         if (value == null || value.trim().isEmpty()) {
 
-            throw new RuntimeException("Property not found : " + key);
+        	throw new PropertyNotFoundException(
+        	        "Property not found : " + key);
 
         }
 
